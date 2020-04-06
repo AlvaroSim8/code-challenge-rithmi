@@ -39,6 +39,6 @@ Las cuáles me muestran una pantalla distinta en el caso de que se encuentre car
 
 Este ha sido el resultado final:
 
-![screenshot](/[resultado-final.png]?raw = true)
+![screenshot](/resultado-final.png?raw=true)
 
 espero que os guste y un saludo!
