@@ -5,7 +5,7 @@ import {
 } from "react-native";
 
 const Logo = (props)=>(
-    <Image style={props.style || styles.logo} source={require('../img/ri.png')}></Image>
+    <Image style={props.style || styles.logo} source={require('../img/rithmi.png')}></Image>
    )
 
    

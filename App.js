@@ -23,23 +23,23 @@ export default class App extends React.Component{
     super(props);
 
     this.state = {
-      datos:[],
+      data:[],
       loading: true,
       error:false,
-      datosChart: null
+      dataChart: null
     }
   }
 
   componentDidMount(){
-    this.getDatos();
+    this.getData();
   }
 
-  getDatos = () => { 
+  getData = () => { 
     fetch(url)
     .then(res => res.json())
     .then(res =>{
-      const dataOrdenado = res.sort((a, b) => (a.date > b.date ? 1 : -1)); 
-      const dataAgrupado = {};
+      const orderedData = res.sort((a, b) => (a.date > b.date ? 1 : -1)); 
+      const groupedData = {};
       const chartData = {
         labels: [],
         datasets: [
@@ -50,31 +50,31 @@ export default class App extends React.Component{
           }
         ],
       };
-      const dataLength = dataOrdenado.length - 1;
+      const dataLength = orderedData.length - 1;
 
-      for (let index = 0; index < dataOrdenado.length; index++) {
-        const medida = dataOrdenado[index];
-        const dia = medida.date.split('T')[0];
-        if (!dataAgrupado[dia]) {
-          dataAgrupado[dia] = [];
+      for (let index = 0; index < orderedData.length; index++) {
+        const measure = orderedData[index];
+        const day = measure.date.split('T')[0];
+        if (!groupedData[day]) {
+          groupedData[day] = [];
         }
-        dataAgrupado[dia].push(medida);
-        const reverse =  dataOrdenado[dataLength - index];
+        groupedData[day].push(measure);
+        const reverse =  orderedData[dataLength - index];
         chartData.labels.push(format(new Date(reverse.date), 'd/p', {locale: es}));
         chartData.datasets[0].data.push(reverse.heartRate)
       }
 
-      const dataFinal = Object.entries(dataAgrupado).map((data) => {
+      const dataFinal = Object.entries(groupedData).map((data) => {
         return {
           title: data[0],
           data: data[1],
         };
       });
       this.setState({
-        datos: dataFinal,
-        datosChart: chartData
+        data: dataFinal,
+        dataChart: chartData
       })
-      setTimeout(() => {this.setState({loading: false})}, 2000);
+      setTimeout(() => {this.setState({loading: false})}, 1000);
     })
     .catch((error)=> {
       this.setState({
@@ -92,7 +92,7 @@ export default class App extends React.Component{
         <Text style={styles.welcome}>Bienvenido a</Text>
         <Text style={styles.name}>Rithmi</Text>
         {this.state.error ?
-        <Text style={styles.name}>Hubo un error al cargar la aplicación</Text> :
+        <Text style={styles.error}>Hubo un error al cargar la aplicación</Text> :
         <ActivityIndicator size="large" color="#00e8c8" />
         }
       </View>
@@ -101,12 +101,12 @@ export default class App extends React.Component{
 
     return ( 
       <SafeAreaView style={styles.container}>       
-      <Logo style={styles.logo}></Logo>
-      {this.state.datosChart &&
-        <Chart data = {this.state.datosChart}></Chart> 
+      <Logo></Logo>
+      {this.state.dataChart &&
+        <Chart data = {this.state.dataChart}></Chart> 
       }
       <SectionList
-        sections={this.state.datos}
+        sections={this.state.data}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => <Item item={item} />}
         renderSectionHeader={({ section: { title } }) => (
@@ -147,11 +147,6 @@ const styles = StyleSheet.create({
     width:60,
     height:40,
     marginBottom:10,
-  },
-  ppm: {
-    fontSize: 24,
-    color:"#00e8c8",
-    fontWeight:"bold",
   },
   welcome:{
     marginTop:60,

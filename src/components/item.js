@@ -13,8 +13,8 @@ const Item = ({ item }) => (
       <Text style={styles.title}>{format(new Date(item.date), 'p',{locale: es})}</Text>
       <Text style={styles.ppm}>{item.heartRate} ppm</Text>
       <Text style={styles.title}>{item.hasAnomaly 
-      ? <Image style={styles.image} source={require('../img/cora.png')}></Image> 
-      : <Image style={styles.arrhythmia} source={require('../img/es.jpg')}></Image>}
+      ? <Image style={styles.image} source={require('../img/heart.png')}></Image> 
+      : <Image style={styles.arrhythmia} source={require('../img/arryt.jpg')}></Image>}
       </Text>
     </View>
   );
